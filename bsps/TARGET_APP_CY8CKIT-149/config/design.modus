@@ -3,27 +3,6 @@
     <Devices>
         <Device mpn="CY8C4147AZI-S475">
             <BlockConfig>
-                <Block location="ioss[0].port[1].pin[0]">
-                    <Aliases>
-                        <Alias value="CYBSP_LED_SLD0"/>
-                        <Alias value="CYBSP_LED5"/>
-                        <Alias value="CYBSP_USER_LED2"/>
-                    </Aliases>
-                </Block>
-                <Block location="ioss[0].port[1].pin[2]">
-                    <Aliases>
-                        <Alias value="CYBSP_LED_SLD1"/>
-                        <Alias value="CYBSP_LED6"/>
-                        <Alias value="CYBSP_USER_LED3"/>
-                    </Aliases>
-                </Block>
-                <Block location="ioss[0].port[1].pin[4]">
-                    <Aliases>
-                        <Alias value="CYBSP_LED_SLD2"/>
-                        <Alias value="CYBSP_LED7"/>
-                        <Alias value="CYBSP_USER_LED4"/>
-                    </Aliases>
-                </Block>
                 <Block location="ioss[0].port[1].pin[6]">
                     <Aliases>
                         <Alias value="CYBSP_LED_SLD3"/>
@@ -154,6 +133,102 @@
                     </Block>
                     <Parameters>
                         <Param id="DriveModes" value="CY_GPIO_DM_ANALOG"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="L120v7k57-g">
+                    <Block location="ioss[0].port[1].pin[0]" locked="true">
+                        <Aliases>
+                            <Alias value="CYBSP_LED_SLD0"/>
+                            <Alias value="CYBSP_LED5"/>
+                            <Alias value="CYBSP_USER_LED2"/>
+                        </Aliases>
+                    </Block>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="uswuUcbyHkU">
+                    <Block location="ioss[0].port[1].pin[1]" locked="true"/>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_HIGHZ"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="F6_FBe6p43o">
+                    <Block location="ioss[0].port[1].pin[2]" locked="true">
+                        <Aliases>
+                            <Alias value="CYBSP_LED_SLD1"/>
+                            <Alias value="CYBSP_LED6"/>
+                            <Alias value="CYBSP_USER_LED3"/>
+                        </Aliases>
+                    </Block>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="hLnvNDGRjGM">
+                    <Block location="ioss[0].port[1].pin[3]" locked="true">
+                        <Aliases>
+                            <Alias value="EEPROM_CS"/>
+                        </Aliases>
+                    </Block>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="Py6n1EpkEvc">
+                    <Block location="ioss[0].port[1].pin[4]" locked="true">
+                        <Aliases>
+                            <Alias value="SD_CARD_CS"/>
+                        </Aliases>
+                    </Block>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
+                        <Param id="inFlash" value="true"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="portLevelConfig" value="false"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8pin" version="2.0" instance="q0IF2WfzOCo">
+                    <Block location="ioss[0].port[1].pin[5]" locked="true">
+                        <Aliases>
+                            <Alias value="SECURE_CS"/>
+                        </Aliases>
+                    </Block>
+                    <Parameters>
+                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
                         <Param id="inFlash" value="true"/>
                         <Param id="initialState" value="1"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
@@ -491,6 +566,16 @@
                         <Param id="startOnReset" value="true"/>
                     </Parameters>
                 </Personality>
+                <Personality template="m0s8peripheralclock" version="1.0" instance="lOpwgbVQDjE">
+                    <Block location="peri[0].div_16[3]" locked="true"/>
+                    <Parameters>
+                        <Param id="calc" value="man"/>
+                        <Param id="desFreq" value="48000000.000000"/>
+                        <Param id="fracDivider" value="0"/>
+                        <Param id="intDivider" value="3"/>
+                        <Param id="startOnReset" value="true"/>
+                    </Parameters>
+                </Personality>
                 <Personality template="m0s8peripheralclock" version="1.0" instance="zAO86hAD19c">
                     <Block location="peri[0].div_16[5]" locked="true"/>
                     <Parameters>
@@ -499,6 +584,47 @@
                         <Param id="fracDivider" value="0"/>
                         <Param id="intDivider" value="15"/>
                         <Param id="startOnReset" value="true"/>
+                    </Parameters>
+                </Personality>
+                <Personality template="m0s8spi" version="1.0" instance="aRs0dXpYyP8">
+                    <Block location="scb[0]" locked="true"/>
+                    <Parameters>
+                        <Param id="ApiMode" value="HIGH_LEVEL"/>
+                        <Param id="BitsOrder" value="MSB_FIRST"/>
+                        <Param id="CallbackDS" value="false"/>
+                        <Param id="CallbackDSName" value="DsClockConfigCallback"/>
+                        <Param id="DataRate" value="1000"/>
+                        <Param id="DeassertSelectLine" value="false"/>
+                        <Param id="EnableFreeRunSclk" value="false"/>
+                        <Param id="EnableInputFilter" value="false"/>
+                        <Param id="EnableLateMisoSample" value="true"/>
+                        <Param id="EnableWakeup" value="false"/>
+                        <Param id="IntrMasterSpiDone" value="false"/>
+                        <Param id="IntrRxFull" value="false"/>
+                        <Param id="IntrRxNotEmpty" value="false"/>
+                        <Param id="IntrRxOverflow" value="false"/>
+                        <Param id="IntrRxTrigger" value="false"/>
+                        <Param id="IntrRxUnderflow" value="false"/>
+                        <Param id="IntrSlaveBusError" value="false"/>
+                        <Param id="IntrTxEmpty" value="false"/>
+                        <Param id="IntrTxNotFull" value="false"/>
+                        <Param id="IntrTxOverflow" value="false"/>
+                        <Param id="IntrTxTrigger" value="false"/>
+                        <Param id="IntrTxUnderflow" value="false"/>
+                        <Param id="ModeUser" value="CY_SCB_SPI_MASTER"/>
+                        <Param id="OvsFactor" value="16"/>
+                        <Param id="RxDataWidth" value="8"/>
+                        <Param id="RxTriggerLevel" value="7"/>
+                        <Param id="SclkModeUser" value="CY_SCB_SPI_CPHA0_CPOL0"/>
+                        <Param id="Ss0Polarity" value="CY_SCB_SPI_ACTIVE_LOW"/>
+                        <Param id="Ss1Polarity" value="CY_SCB_SPI_ACTIVE_LOW"/>
+                        <Param id="Ss2Polarity" value="CY_SCB_SPI_ACTIVE_LOW"/>
+                        <Param id="Ss3Polarity" value="CY_SCB_SPI_ACTIVE_LOW"/>
+                        <Param id="SubModeUser" value="CY_SCB_SPI_MOTOROLA"/>
+                        <Param id="T_DSO_INTERNAL" value="20"/>
+                        <Param id="TxDataWidth" value="8"/>
+                        <Param id="TxTriggerLevel" value="0"/>
+                        <Param id="inFlash" value="true"/>
                     </Parameters>
                 </Personality>
                 <Personality template="m0s8i2c" version="1.0" instance="pNhhdvbSODU">
@@ -630,6 +756,30 @@
                     <Port name="peri[0].div_16[0].clk[0]"/>
                 </Net>
                 <Net>
+                    <Port name="ioss[0].port[1].pin[0].digital_inout[0]"/>
+                    <Port name="scb[0].spi_mosi[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[1].pin[1].digital_inout[0]"/>
+                    <Port name="scb[0].spi_miso[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[1].pin[2].digital_inout[0]"/>
+                    <Port name="scb[0].spi_clk[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[1].pin[3].digital_inout[0]"/>
+                    <Port name="scb[0].spi_select0[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[1].pin[4].digital_out[0]"/>
+                    <Port name="scb[0].spi_select1[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[1].pin[5].digital_out[0]"/>
+                    <Port name="scb[0].spi_select2[0]"/>
+                </Net>
+                <Net>
                     <Port name="ioss[0].port[3].pin[0].digital_inout[0]"/>
                     <Port name="scb[1].i2c_scl[0]"/>
                 </Net>
@@ -648,6 +798,10 @@
                 <Net>
                     <Port name="peri[0].div_16[1].clk[0]"/>
                     <Port name="scb[3].clock[0]"/>
+                </Net>
+                <Net>
+                    <Port name="peri[0].div_16[3].clk[0]"/>
+                    <Port name="scb[0].clock[0]"/>
                 </Net>
                 <Net>
                     <Port name="peri[0].div_16[5].clk[0]"/>
