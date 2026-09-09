@@ -6,7 +6,7 @@ import time
 # CONFIGURATION
 # ============================================================
 
-PORT = "/dev/ttyACM1"
+PORT = "/dev/ttyACM0"
 BAUDRATE = 115200
 
 
