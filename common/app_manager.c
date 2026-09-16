@@ -7,6 +7,7 @@
 #include "relay_app.h"
 #include "touch_app.h"
 #include "seven_segment_app.h"
+#include "motor_app.h"
 #include "pir_app.h"
 #include "potentiometer_app.h"
 #include "joystick_app.h"
@@ -45,6 +46,10 @@ void app_manager_stop(void)
     else if (current_app == APP_TOUCH)
     {
     	touch_app_stop();
+    }
+    else if (current_app == APP_MOTOR)
+    {
+        motor_app_stop();
     }
     else if (current_app == APP_PIR)
     {
@@ -130,6 +135,11 @@ void app_manager_start(app_id_t app)
     	current_app = APP_TOUCH;
     	touch_app_init();
     }
+    else if (app == APP_MOTOR)
+    {
+        current_app = APP_MOTOR;
+        motor_app_init();
+    }
     else if (app == APP_PIR)
     {
         current_app = APP_PIR;
@@ -214,6 +224,10 @@ void app_manager_run(void)
     else if (current_app == APP_TOUCH)
     {
         touch_app_run();
+    }
+    else if (current_app == APP_MOTOR)
+    {
+        motor_app_run();
     }
     else if (current_app == APP_PIR)
     {

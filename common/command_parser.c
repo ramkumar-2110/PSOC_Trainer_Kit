@@ -87,6 +87,15 @@ void command_parser_process(void)
                         );
                         break;
 
+                    case 5:
+                        app_manager_start(APP_MOTOR);
+
+                        Cy_SCB_UART_PutString(
+                            SCB3,
+                            "OK: MOTOR\r\n"
+                        );
+                        break;
+
                     case 6:
                         app_manager_start(APP_PIR);
 
