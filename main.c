@@ -5,6 +5,86 @@
 
 cy_stc_scb_i2c_context_t i2c_context;
 
+static void process_esp_uart(void)
+{
+    static char buffer[8];
+    static uint32_t index = 0;
+
+    while (Cy_SCB_UART_GetNumInRxFifo(wifi_uart_HW) > 0)
+    {
+        char c = (char)Cy_SCB_UART_Get(wifi_uart_HW);
+
+        /* Ignore carriage return */
+        if (c == '\r')
+        {
+            continue;
+        }
+
+        /* End of command */
+        if (c == '\n')
+        {
+            if (index > 0)
+            {
+                uint32_t command = 0;
+                bool valid = true;
+
+                buffer[index] = '\0';
+
+                /* Convert ASCII number to integer */
+                for (uint32_t i = 0; i < index; i++)
+                {
+                    if ((buffer[i] < '0') ||
+                        (buffer[i] > '9'))
+                    {
+                        valid = false;
+                        break;
+                    }
+
+                    command =
+                        (command * 10UL) +
+                        (uint32_t)(buffer[i] - '0');
+                }
+
+                /* Process valid command */
+                if (valid)
+                {
+                    /* 0 = STOP */
+                    if (command == 0)
+                    {
+                        app_manager_stop();
+                    }
+
+                    /* 1 to 19 = applications */
+                    else if ((command >= 1) &&
+                             (command <= 18))
+                    {
+                        app_manager_start(
+                            (app_id_t)command
+                        );
+                    }
+                }
+
+                /* Reset receive buffer */
+                index = 0;
+            }
+        }
+
+        /* Store received character */
+        else
+        {
+            if (index < (sizeof(buffer) - 1U))
+            {
+                buffer[index++] = c;
+            }
+            else
+            {
+                /* Buffer overflow -> discard command */
+                index = 0;
+            }
+        }
+    }
+}
+
 int main(void)
 {
     cy_rslt_t result;
@@ -41,6 +121,20 @@ cy_en_scb_i2c_status_t i2c_status;
 
     Cy_SCB_UART_Enable(SCB3);
 
+    Cy_SCB_UART_Init(
+        wifi_uart_HW,
+        &wifi_uart_config,
+        NULL
+    );
+
+    Cy_SCB_UART_Enable(wifi_uart_HW);
+
+    Cy_SCB_UART_PutString(
+        wifi_uart_HW,
+        "PSOC_READY\r\n"
+    );
+
+
 if (i2c_status == CY_SCB_I2C_SUCCESS)
 {
     Cy_SCB_UART_PutString(
@@ -72,6 +166,7 @@ else
     while (1)
     {
         command_parser_process();
+        process_esp_uart();
         app_manager_run();
     }
 }
