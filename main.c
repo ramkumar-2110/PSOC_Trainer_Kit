@@ -4,6 +4,7 @@
 #include "app_manager.h"
 
 cy_stc_scb_i2c_context_t i2c_context;
+cy_stc_scb_spi_context_t spi_context;
 
 static void process_esp_uart(void)
 {
@@ -89,6 +90,7 @@ int main(void)
 {
     cy_rslt_t result;
 cy_en_scb_i2c_status_t i2c_status;
+cy_en_scb_spi_status_t spi_status;
 
     result = cybsp_init();
     CY_ASSERT(result == CY_RSLT_SUCCESS);
@@ -97,6 +99,24 @@ cy_en_scb_i2c_status_t i2c_status;
 
     /* Initialize Device Configurator peripherals */
     init_cycfg_all();
+
+spi_status = Cy_SCB_SPI_Init(
+    SCB0,
+    &scb_0_config,
+    &spi_context
+);
+
+if (spi_status == CY_SCB_SPI_SUCCESS)
+{
+    Cy_SCB_SPI_SetActiveSlaveSelect(
+        SCB0,
+        CY_SCB_SPI_SLAVE_SELECT2
+    );
+
+    Cy_SCB_SPI_Enable(SCB0);
+}
+
+//Cy_SCB_SPI_Enable(SCB0);
 
     /* Initialize I2C PHR on SCB1 */
     i2c_status = Cy_SCB_I2C_Init(
