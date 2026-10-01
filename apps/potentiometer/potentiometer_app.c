@@ -1,8 +1,8 @@
 /*
 Description: ADC code to read the voltage level from the potentiometer
-LED is connected with P3.5
+LED is connected with P3.5, P2.7 and P3.4
 Potentiometer is connected with P2.1
-LED will glow once the volatage level become greater than the threshold
+LED P3.5 and P2.7 will glow once the volatage level become greater than the threshold
 */
 
 #include<stdint.h>
