@@ -21,6 +21,10 @@ LED will glow once the volatage level become greater than the threshold
 #define HSIOM_PORT_SEL2  (*(volatile uint32_t*) 0x40020200)
 #define GPIO_PRT2_PC     (*(volatile uint32_t*) 0x40040208)
 #define GPIO_PRT2_PC2    (*(volatile uint32_t*) 0x40040218)
+#define GPIO_PRT2_DR     (*(volatile uint32_t*) 0x40040200)
+#define GPIO_PRT2_DR_SET (*(volatile uint32_t*) 0x40040240)
+#define GPIO_PRT2_DR_CLR (*(volatile uint32_t*) 0x40040244)
+#define GPIO_PRT2_DR_INV (*(volatile uint32_t*) 0x40040248)
 
 /*SAR ADC*/
 #define SAR_CTRL               (*(volatile uint32_t*) 0x403A0000)
@@ -57,69 +61,88 @@ volatile uint16_t chanresult = 0;
 void potentiometer_app_init(void)
 {
     clock_config();
-    /*led configurations*/
-    HSIOM_PORT_SEL3 = 0x00000000; //clear previous configuration and set GPIO function for all pins of port 3
-    GPIO_PRT3_PC &= (~(0x7 << 15)); //clear previous configuration
-    GPIO_PRT3_PC |= (0x6 << 15); //set pin 3.5 as strong drive output (3 bits used to select drive mode so for pin 4--> 5*3=15    
-    GPIO_PRT3_DR = 0x00000000; //set initial value as LOW
+        /**********************LED configurations*******************/
+    /*configure in GPIO mode*/
+    HSIOM_PORT_SEL3 &= (~(0xF << 23)); 
+    HSIOM_PORT_SEL2 &= (~(0xF << 28));
 
-    GPIO_PRT3_PC &= (~(0x7 << 12));
-    GPIO_PRT3_PC |= (0x6 << 12);
+    /*Configure GPIO in Strong drive for output*/
+    GPIO_PRT3_PC &= (~(0x7 << 15)); 
+    GPIO_PRT3_PC |= (0x6 << 15); 
+    GPIO_PRT2_PC &= (~(0x7 << 21)); 
+    GPIO_PRT2_PC |= (0x6 << 21);
+
+    /*set initial value as LOW for led*/
     GPIO_PRT3_DR = 0x00000000;
+    GPIO_PRT2_DR = 0x00000000;
 
 
-    /*adc pin configurations*/
-    HSIOM_PORT_SEL2 = 0x00000000;//clear previous configurations
-    HSIOM_PORT_SEL2 |= (0x6 << 4);//configures P2_1 for analog mode
-    GPIO_PRT2_PC &= (~(0x7 << 3));//clear previous configuration and set the pin to anolog mode with high impedence(z)
-    GPIO_PRT2_PC2 &= (~(0x1 << 1));//clear previous configuration
-    GPIO_PRT2_PC2 |= (0x1 << 1); //disables input buffer
+    /*********************adc pin configurations******************/
+    /*configures P2_1 for analog mode*/
+    HSIOM_PORT_SEL2 = 0x00000000;
+    HSIOM_PORT_SEL2 |= (0x6 << 4);
 
-    /*adc configurations*/
-    SAR_CTRL = 0x00000000; //clear previous configurations
-    SAR_CTRL |= (0x7 << 4); //set Vref to VDDA
-    SAR_CTRL |= (0x1 << 31); //enables sar
-    SAR_CTRL |= (0x7 << 9); //set NEG_SEL to Vref
-                /* SAR_CTRL bits value selection 
-                NEG_SEL (Vneg) default value is 0 for single ended mode [11:9]
-                VREF_BYP_CAP_EN default value is 0 which is correct value when VREF buffer is OFF [7]
-                SAR_HW_CTRL_NEGVREF default 0 used for only firmware control [13]
-                PWR_CTRL_VREF default value 0 used for normal power for Vref buffer at 18MHz SAR frequency [15:14]
-                ICONT_LV default value 0 used for normal power mode in ADC [25:24]
-                DEEPSLEEP_ON default value 0 indicates deepsleep is OFF [27]
-                */
-    SAR_MUX_SWITCH0 = 0x00000000; //clear previous configurations
-    SAR_MUX_SWITCH0 |= (0x1 << 16); //close switch between Vssa and Vminus signal
-    SAR_MUX_SWITCH0 |= (0x1 << 1); //close switch between P2_0 and Vplus signal
-    SAR_SAMPLE_CTRL = 0x00000000; //clear previous configurations   
-    SAR_SAMPLE_CTRL |= (0x1 << 16); //enables continuous mode
-    SAR_SAMPLE_TIME01 = 0x00060006; //aquisition time
-    SAR_CHAN_CONFIG0 = 0x00000001; //clear previous configuration and selects the SAR MUX in port addr and pin 1
+    /*Configure ADC pin drive with high impedence*/
+    GPIO_PRT2_PC &= (~(0x7 << 3));
+
+    /*Disable input buffer*/
+    GPIO_PRT2_PC2 &= (~(0x1 << 1));
+    GPIO_PRT2_PC2 |= (0x1 << 1);
+
+    /*********************adc configurations***********************/
+    /*Vref=VDDA , NEG_SEL=Vref , Enable SAR*/
+    SAR_CTRL = 0x00000000;
+    SAR_CTRL |= ((0x7 << 4) | (0x7 << 9) | (0x1 << 31));
+
+    /*close switch between Vssa and Vminus ,P2_0 and Vplus signal*/
+    SAR_MUX_SWITCH0 = 0x00000000;
+    SAR_MUX_SWITCH0 |= ((0x1 << 16) | (0x1 << 1));
+
+    /*Enables continous mode*/
+    SAR_SAMPLE_CTRL = 0x00000000;
+    SAR_SAMPLE_CTRL |= (0x1 << 16);
+
+    /*Configure acquisition time as 6 clock cycles*/
+    SAR_SAMPLE_TIME01 = 0x00060006;
+
+    /*configure channel with SARmux port addr and pin 1*/
+    SAR_CHAN_CONFIG0 = 0x00000001;
+
+    /*Enables channel 0*/
     SAR_CHAN_EN = 0x00000000;
-    SAR_CHAN_EN = (1 << 0); //enables channel 0
-    SAR_START_CTRL = 0x00000000; //clear previous configurations
+    SAR_CHAN_EN |= (0x1 << 0); 
     
-    
-    SAR_START_CTRL |= (0x1 << 0); //start adc conversion
+    /*Start adc conversion*/
+    SAR_START_CTRL = 0x00000000;
+    SAR_START_CTRL |= (0x1 << 0);
 }
 
 void potentiometer_app_run(void)
 {
         chanresult = SAR_CHAN_RESULT0 & 0x0FFF;
 
-        if(chanresult >2048) //turn on LED if the voltage level is greater than the threshold
+        if(chanresult >1365 && chanresult < 2730) //turn on LED if the voltage level is greater than the threshold
         {
             GPIO_PRT3_DR_SET = (0x1 << 5);
+            GPIO_PRT2_DR_CLR = (0x1 << 7);
         }
-        else
+        else if (chanresult > 2730) //turn off LED if the voltage level is less than the threshold
+        {
+            GPIO_PRT2_DR_SET = (0x1 << 7);
+            GPIO_PRT3_DR_SET = (0x1 << 5);
+        }
+        else //turn off LED if the voltage level is less than the threshold
         {
             GPIO_PRT3_DR_CLR = (0x1 << 5);
+            GPIO_PRT2_DR_CLR = (0x1 << 7);
         }
 }
 
 void potentiometer_app_stop(void)
 {
     SAR_CHAN_EN = 0x00000000; //disables channel 0
-    SAR_CTRL &= (~(0x1 << 31)); //disables sar
     GPIO_PRT3_DR_CLR = (0x1 << 5); //turn off LED
+    GPIO_PRT2_DR_CLR = (0x1 << 7); //turn off LED
+    HSIOM_PORT_SEL2 = 0x00000000;//open switch between AMUXA and P2_1
+    SAR_MUX_SWITCH_CLEAR0 = 0xffffffff; //clear previous configurations
 }
